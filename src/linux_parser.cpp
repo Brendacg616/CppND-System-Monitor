@@ -3,10 +3,11 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <unistd.h>
+#include <cstdlib>
 #include "linux_parser.h"
 
 using std::stof;
+using std::strtol;
 using std::string;
 using std::to_string;
 using std::vector;
@@ -218,19 +219,46 @@ string LinuxParser::User(int pid) {
 
 // TODO: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) { 
+  long total_uptime = LinuxParser::UpTime();
   string line;
   string data;
   long up_time{0};
+  long clock_ticks;
   std::ifstream stream(kProcDirectory + to_string(pid) +kStatFilename);
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
-    for (int i = 0; i < 22 ; i++)
+    for (int i = 0; i < 21 ; i++)
     { 
       linestream >> data;
     }
-    long clock_ticks = stol(data);
-    up_time = clock_ticks / sysconf(_SC_CLK_TCK);
+    linestream >> clock_ticks;
+    up_time = total_uptime - (clock_ticks / sysconf(_SC_CLK_TCK));
   }
   return up_time; 
+}
+
+
+vector<long> LinuxParser::CpuUtilization(int pid) 
+{
+  string data;
+  vector<long> cpuData(5);
+  string line;
+  std::ifstream stream(kProcDirectory + to_string(pid) +kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    int j{0};
+    for (int i = 0; i < 22; i++)
+    {
+      if ((i >= 13 && i <= 16) || i == 21)
+      {
+        linestream >> cpuData[j];
+        j++;
+      }
+      else
+        linestream >> data;
+    }
+  }
+  return cpuData;
 }
