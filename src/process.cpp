@@ -18,7 +18,7 @@ Process::Process(int pid):pid_(pid)
 }
 int Process::Pid() { return pid_; }
 
-// TODO: Return this process's CPU utilization
+
 float Process::CpuUtilization() const{ 
     long uptime = LinuxParser::UpTime();
     auto proc_data = LinuxParser::CpuUtilization(pid_);

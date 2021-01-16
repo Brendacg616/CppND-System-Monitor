@@ -166,7 +166,6 @@ string LinuxParser::Command(int pid) {
   return command; 
 }
 
-// TODO: Read and return the memory used by a process
 string LinuxParser::Ram(int pid) { 
   string line;
   string tag;
@@ -182,7 +181,6 @@ string LinuxParser::Ram(int pid) {
   return to_string(mem_kB/1024); 
 }
 
-// TODO: Read and return the user ID associated with a process
 string LinuxParser::Uid(int pid) { 
   string line;
   string tag;
@@ -198,7 +196,6 @@ string LinuxParser::Uid(int pid) {
   return uid; 
 }
 
-// TODO: Read and return the user associated with a process
 string LinuxParser::User(int pid) { 
   string line;
   string current_uid,x;
@@ -217,7 +214,6 @@ string LinuxParser::User(int pid) {
   return user; 
 }
 
-// TODO: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) { 
   long total_uptime = LinuxParser::UpTime();
   string line;

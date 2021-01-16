@@ -22,7 +22,7 @@ class CPUData
 
 class Processor {
  public:
-  float Utilization();  // TODO: See src/processor.cpp
+  float Utilization();  
  private:
   CPUData prev_, current_;
 };
